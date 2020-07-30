@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 /**
  * @author cenganhui
  */
@@ -50,12 +52,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public User createUser(User user) {
         user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
+        user.setCreateBy(onlineService.getCurrentUsername());
+        user.setCreateTime(LocalDateTime.now());
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(User user) {
         user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
+        user.setUpdatedBy(onlineService.getCurrentUsername());
+        user.setUpdateTime(LocalDateTime.now());
         User dbUser = userRepository.findUserById(user.getId());
         BeanUtil.copyPropertiesIgnoreNull(user, dbUser, "username");
         return userRepository.save(dbUser);

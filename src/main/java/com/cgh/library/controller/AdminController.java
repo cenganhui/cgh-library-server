@@ -37,8 +37,8 @@ public class AdminController {
 
     @ApiOperation("创建用户")
     @PostMapping("users")
-    public BaseResponse<User> createUser(@Valid @RequestBody User user) {
-        adminService.checkPermission();
+    public BaseResponse<User> createUser(@RequestBody User user) {
+//        adminService.checkPermission();
         return BaseResponse.success(adminService.createUser(user));
     }
 

@@ -1,11 +1,9 @@
 package com.cgh.library.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.sql.Update;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +18,7 @@ import java.util.List;
 @Setter
 @Table(name = "lib_user")
 @ApiModel(value = "用户实体类")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @Column(name = "id")
@@ -40,7 +38,6 @@ public class User {
 
     @NotBlank
     @ApiModelProperty(value = "密码")
-    @JsonIgnore
     private String password;
 
     @ApiModelProperty(value = "管理员权限")

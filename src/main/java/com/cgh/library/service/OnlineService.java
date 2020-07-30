@@ -21,4 +21,11 @@ public interface OnlineService {
      */
     OnlineUserDTO getOnlineUserDTO();
 
+    /**
+     * 获取当前用户的用户名
+     *
+     * @return 用户名
+     */
+    String getCurrentUsername();
+
 }

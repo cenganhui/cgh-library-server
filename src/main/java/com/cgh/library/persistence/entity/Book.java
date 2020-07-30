@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.sql.Update;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Table(name = "lib_book")
 @ApiModel(value = "书本实体类")
-public class Book {
+public class Book extends BaseEntity {
 
     @Id
     @Column(name = "id")

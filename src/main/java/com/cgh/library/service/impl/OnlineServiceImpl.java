@@ -37,4 +37,9 @@ public class OnlineServiceImpl implements OnlineService {
         return onlineUserDTO;
     }
 
+    @Override
+    public String getCurrentUsername() {
+        return getOnlineUserDTO().getUserName();
+    }
+
 }

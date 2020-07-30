@@ -17,9 +17,27 @@ spring:
   # 配置 Redis
   redis:
     host: 47.115.148.227
-    password: nishi213
+    password:
     timeout: 5000
     database: 0
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: GMT+8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+#  spring.jackson.default-property-inclusion=non_null
+#  spring.jackson.time-zone=GMT+8
+#  spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+#  spring.jpa.hibernate.ddl-auto=update
+#  spring.jpa.open-in-view=true
+#  spring.jpa.show-sql=true
 
 # fastdep-shiro-jwt 配置
 fastdep:
