@@ -25,7 +25,6 @@ public class AdminController {
 
     private final AdminService adminService;
 
-
     @ApiOperation("根据用户名查询用户")
     @GetMapping("users")
     public BaseResponse<Page<User>> getAllUser(@RequestParam(value = "username", required = false) String username,

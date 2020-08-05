@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT
     username: root
-    password: nishi213
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   servlet:
@@ -46,6 +46,9 @@ fastdep:
       # 不拦截
       front:
         path: /auth/login
+        role: anon
+      reigster:
+        path: /auth/register
         role: anon
       # 拦截
       logout:

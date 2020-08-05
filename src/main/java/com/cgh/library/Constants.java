@@ -12,10 +12,12 @@ public abstract class Constants {
 
 //    public static final String SAVE_FILE_PATH = "/home/www/image";
 
-    public static final String SAVE_FILE_PATH = "E:\\library\\";
+    public static final String SAVE_FILE_PATH = "D:\\library\\";
     public static final String HOST = "http://47.115.148.227:8210/library";
 
-    public static final String REDIS_USER_PREFIX = "library-user-";
+    public static final String REDIS_USER_PREFIX = "library:lib_user:";
+
+    public static final String BOOK_FORMAT = "pdf";
 
     private Constants() {
     }

@@ -51,4 +51,10 @@ public class BookController {
         return BaseResponse.success(bookService.upload(file));
     }
 
+    @ApiOperation("更新图书")
+    @PostMapping("update")
+    public BaseResponse<Book> update(@RequestBody Book book) {
+        return BaseResponse.success(bookService.update(book));
+    }
+
 }

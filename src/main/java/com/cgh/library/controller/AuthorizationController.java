@@ -3,6 +3,7 @@ package com.cgh.library.controller;
 import com.cgh.library.api.BaseResponse;
 import com.cgh.library.api.LoginRes;
 import com.cgh.library.dto.AuthUserDTO;
+import com.cgh.library.persistence.entity.User;
 import com.cgh.library.service.AuthorizationService;
 import com.cgh.library.util.HttpServletUtil;
 import io.swagger.annotations.Api;
@@ -29,6 +30,12 @@ public class AuthorizationController {
     @PostMapping("login")
     public BaseResponse<LoginRes> login(@RequestBody AuthUserDTO authUserDTO, HttpServletRequest request) {
         return BaseResponse.success(authorizationService.login(authUserDTO, HttpServletUtil.getIp(request)));
+    }
+
+    @ApiOperation("用户注册")
+    @PostMapping("register")
+    public BaseResponse<User> register(@RequestBody User user) {
+        return BaseResponse.success(authorizationService.createUser(user));
     }
 
     @ApiOperation("退出登录")

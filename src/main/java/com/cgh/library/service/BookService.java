@@ -42,4 +42,12 @@ public interface BookService {
      */
     Book upload(MultipartFile file);
 
+    /**
+     * 更新图书
+     *
+     * @param book 图书
+     * @return 更新后的图书
+     */
+    Book update(Book book);
+
 }

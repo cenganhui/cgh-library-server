@@ -33,6 +33,10 @@ public class StatusCode {
 
     public static final StatusCode NO_ADMIN_PERMISSION = new StatusCode("0010", "权限不足", Level.WARN);
 
+    public static final StatusCode NOT_FOUND_BOOK = new StatusCode("0011", "找不到此书", Level.WARN);
+
+    public static final StatusCode BOOK_FORMAT_ERROR = new StatusCode("0012", "上传格式错误", Level.WARN);
+
     private final String code;
     private final String msg;
     private final Level level;

@@ -7,7 +7,9 @@ import com.cgh.library.persistence.entity.Book;
 import com.cgh.library.persistence.repository.BookRepository;
 import com.cgh.library.service.BookService;
 import com.cgh.library.service.OnlineService;
+import com.cgh.library.util.BeanUtil;
 import com.mysql.cj.util.StringUtils;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,23 +56,41 @@ public class BookServiceImpl implements BookService {
     public Book upload(MultipartFile file) {
         // TODO 待重构
         String name = file.getOriginalFilename();
-        String filePath = String.format("%s%s.pdf", Constants.SAVE_FILE_PATH, UUID.randomUUID());
-        // 保存文件到磁盘
-        File dest = new File(filePath);
-        try {
-            file.transferTo(dest);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (StringUtil.isNullOrEmpty(name)) {
+            throw new LibraryException(StatusCode.REQUEST_PARAM_ILLEGAL);
         }
-        String url = Constants.HOST;
-        Book book = new Book();
-        book.setName(name);
-        book.setUrl(url);
-        book.setFilePath(filePath);
-        book.setUserId(onlineService.getCurrentUserId());
-        book.setCurrentPage(0);
-        book.setTotalPage(0);
-        return bookRepository.save(book);
+        if (checkFormat(name)) {
+            String filePath = String.format("%s%s.pdf", Constants.SAVE_FILE_PATH, UUID.randomUUID());
+            // 保存文件到磁盘
+            File dest = new File(filePath);
+            try {
+                file.transferTo(dest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String url = Constants.HOST;
+            Book book = new Book();
+            book.setName(name);
+            book.setUrl(url);
+            book.setFilePath(filePath);
+            book.setUserId(onlineService.getCurrentUserId());
+//        book.setCurrentPage(0);
+//        book.setTotalPage(0);
+            return bookRepository.save(book);
+        } else {
+            throw new LibraryException(StatusCode.BOOK_FORMAT_ERROR);
+        }
+    }
+
+    @Override
+    public Book update(Book book) {
+        Book dbBook = bookRepository.findBookById(book.getId());
+        if (dbBook != null) {
+            BeanUtil.copyPropertiesIgnoreNull(book, dbBook);
+            return bookRepository.save(dbBook);
+        } else {
+            throw new LibraryException(StatusCode.NOT_FOUND_BOOK);
+        }
     }
 
     /**
@@ -85,6 +105,21 @@ public class BookServiceImpl implements BookService {
             throw new LibraryException(StatusCode.BOOK_UNAUTHORIZED_ACCESS);
         }
         return true;
+    }
+
+    /**
+     * 检验上传的文件是否是 pdf 格式
+     *
+     * @param name 文件名称
+     * @return 是否合格
+     */
+    private Boolean checkFormat(String name) {
+        String[] str = name.split("\\.");
+        if (str.length == 0) {
+            return false;
+        }
+        String suffix = str[str.length - 1];
+        return Constants.BOOK_FORMAT.equals(suffix);
     }
 
 }

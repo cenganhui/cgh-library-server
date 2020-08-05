@@ -10,6 +10,7 @@ import com.cgh.library.exception.LibraryException;
 import com.cgh.library.persistence.entity.User;
 import com.cgh.library.persistence.repository.UserRepository;
 import com.cgh.library.service.AuthorizationService;
+import com.cgh.library.util.EncryptUtil;
 import com.louislivi.fastdep.shirojwt.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -61,6 +63,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public void logout() {
         redisTemplate.delete(Constants.REDIS_USER_PREFIX + jwtUtil.getUserId());
+    }
+
+    @Override
+    public User createUser(User user) {
+        user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
+        user.setCreateTime(LocalDateTime.now());
+        return userRepository.save(user);
     }
 
 }
