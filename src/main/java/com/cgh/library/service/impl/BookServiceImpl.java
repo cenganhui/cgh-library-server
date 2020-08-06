@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -74,6 +75,8 @@ public class BookServiceImpl implements BookService {
             book.setUrl(url);
             book.setFilePath(filePath);
             book.setUserId(onlineService.getCurrentUserId());
+            book.setCreateBy(onlineService.getCurrentUsername());
+            book.setCreateTime(LocalDateTime.now());
 //        book.setCurrentPage(0);
 //        book.setTotalPage(0);
             return bookRepository.save(book);
@@ -87,6 +90,8 @@ public class BookServiceImpl implements BookService {
         Book dbBook = bookRepository.findBookById(book.getId());
         if (dbBook != null) {
             BeanUtil.copyPropertiesIgnoreNull(book, dbBook);
+            dbBook.setUpdatedBy(onlineService.getCurrentUsername());
+            dbBook.setUpdateTime(LocalDateTime.now());
             return bookRepository.save(dbBook);
         } else {
             throw new LibraryException(StatusCode.NOT_FOUND_BOOK);
@@ -97,14 +102,12 @@ public class BookServiceImpl implements BookService {
      * 图书所属用户id是否与当前用户id匹配
      *
      * @param id 图书id
-     * @return 结果
      */
-    private Boolean matchUserId(Long id) {
+    private void matchUserId(Long id) {
         Book book = bookRepository.findBookById(id);
         if (!book.getUserId().equals(onlineService.getCurrentUserId())) {
             throw new LibraryException(StatusCode.BOOK_UNAUTHORIZED_ACCESS);
         }
-        return true;
     }
 
     /**

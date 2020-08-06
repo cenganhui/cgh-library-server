@@ -12,6 +12,7 @@ import com.cgh.library.service.OnlineService;
 import com.cgh.library.util.BeanUtil;
 import com.cgh.library.util.EncryptUtil;
 import com.mysql.cj.util.StringUtils;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,12 +60,20 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public User updateUser(User user) {
-        user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
+        if (!StringUtil.isNullOrEmpty(user.getPassword())) {
+            user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
+        }
         user.setUpdatedBy(onlineService.getCurrentUsername());
         user.setUpdateTime(LocalDateTime.now());
         User dbUser = userRepository.findUserById(user.getId());
         BeanUtil.copyPropertiesIgnoreNull(user, dbUser, "username");
         return userRepository.save(dbUser);
+    }
+
+    @Override
+    public Boolean updateAdmin(Long id, Boolean admin) {
+        Integer res = userRepository.updateAdminById(id, admin);
+        return res > 0;
     }
 
     @Override

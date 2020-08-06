@@ -29,18 +29,21 @@ public class AuthorizationController {
     @ApiOperation("用户登录")
     @PostMapping("login")
     public BaseResponse<LoginRes> login(@RequestBody AuthUserDTO authUserDTO, HttpServletRequest request) {
+        log.info("用户登录");
         return BaseResponse.success(authorizationService.login(authUserDTO, HttpServletUtil.getIp(request)));
     }
 
     @ApiOperation("用户注册")
     @PostMapping("register")
     public BaseResponse<User> register(@RequestBody User user) {
+        log.info("用户注册");
         return BaseResponse.success(authorizationService.createUser(user));
     }
 
     @ApiOperation("退出登录")
     @DeleteMapping("logout")
     public BaseResponse<String> logout() {
+        log.info("退出登录");
         authorizationService.logout();
         return BaseResponse.success("logout success");
     }

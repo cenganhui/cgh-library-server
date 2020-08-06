@@ -41,6 +41,15 @@ public interface AdminService {
     User updateUser(User user);
 
     /**
+     * 根据用户id修改管理员权限
+     *
+     * @param id    用户id
+     * @param admin 管理员权限
+     * @return 结果
+     */
+    Boolean updateAdmin(Long id, Boolean admin);
+
+    /**
      * 根据id删除用户
      *
      * @param id 用户id

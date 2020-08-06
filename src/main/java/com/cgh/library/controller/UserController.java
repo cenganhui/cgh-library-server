@@ -27,12 +27,14 @@ public class UserController {
     @ApiOperation("修改用户")
     @PutMapping
     public BaseResponse<User> update(@Valid @RequestBody User user) {
+        log.info("修改用户");
         return BaseResponse.success(userService.updateUser(user));
     }
 
     @ApiOperation("修改密码")
     @PutMapping("password")
     public BaseResponse<String> password(@Valid @RequestBody PasswordReq req) {
+        log.info("修改密码");
         userService.password(req);
         return BaseResponse.success("密码修改成功");
     }
@@ -40,6 +42,7 @@ public class UserController {
     @ApiOperation("获取个人信息")
     @GetMapping
     public BaseResponse<User> getInfo() {
+        log.info("获取个人信息");
         return BaseResponse.success(userService.getInfo());
     }
 
