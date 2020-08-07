@@ -56,7 +56,7 @@ public class BookController {
     }
 
     @ApiOperation("更新图书")
-    @PostMapping("update")
+    @PutMapping
     public BaseResponse<Book> update(@RequestBody Book book) {
         log.info("更新图书");
         return BaseResponse.success(bookService.update(book));
