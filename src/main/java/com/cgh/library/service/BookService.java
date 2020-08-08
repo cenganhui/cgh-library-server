@@ -50,4 +50,12 @@ public interface BookService {
      */
     Book update(Book book);
 
+    /**
+     * 根据id持久化图书信息
+     *
+     * @param id 图书id
+     * @return 图书
+     */
+    Book persistById(Long id);
+
 }

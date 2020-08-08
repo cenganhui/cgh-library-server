@@ -37,6 +37,8 @@ public class StatusCode {
 
     public static final StatusCode BOOK_FORMAT_ERROR = new StatusCode("0012", "上传格式错误", Level.WARN);
 
+    public static final StatusCode USER_EXIST = new StatusCode("0013", "用户已存在", Level.WARN);
+
     private final String code;
     private final String msg;
     private final Level level;

@@ -1,5 +1,7 @@
 package com.cgh.library.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cgh.library.Constants;
 import com.cgh.library.api.StatusCode;
 import com.cgh.library.exception.LibraryException;
@@ -13,6 +15,7 @@ import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author cenganhui
@@ -31,6 +35,8 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     private final OnlineService onlineService;
+
+    private final StringRedisTemplate redisTemplate;
 
     @Override
     public Page<Book> getAllBook(Integer page, Integer size, String name) {
@@ -77,8 +83,8 @@ public class BookServiceImpl implements BookService {
             book.setUserId(onlineService.getCurrentUserId());
             book.setCreateBy(onlineService.getCurrentUsername());
             book.setCreateTime(LocalDateTime.now());
-//        book.setCurrentPage(0);
-//        book.setTotalPage(0);
+            book.setCurrentPage(0);
+            book.setTotalPage(0);
             return bookRepository.save(book);
         } else {
             throw new LibraryException(StatusCode.BOOK_FORMAT_ERROR);
@@ -87,7 +93,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book update(Book book) {
-        Book dbBook = bookRepository.findBookById(book.getId());
+        // 将 book 保存至 Redis，过期时间为 2 小时
+        redisTemplate.opsForValue().set(Constants.REDIS_BOOK_PREFIX + book.getId(), JSON.toJSONString(book), 2, TimeUnit.HOURS);
+        return book;
+    }
+
+    @Override
+    public Book persistById(Long id) {
+        // 从 Redis 中获取图书信息
+        Book book = JSONObject.parseObject(redisTemplate.opsForValue().get(Constants.REDIS_BOOK_PREFIX + id), Book.class);
+        if (book == null) {
+            throw new LibraryException(StatusCode.NOT_FOUND_BOOK);
+        }
+        // 查询数据库是否有此书，有则复制更新
+        Book dbBook = bookRepository.findBookById(id);
         if (dbBook != null) {
             BeanUtil.copyPropertiesIgnoreNull(book, dbBook);
             dbBook.setUpdatedBy(onlineService.getCurrentUsername());

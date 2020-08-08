@@ -62,4 +62,11 @@ public class BookController {
         return BaseResponse.success(bookService.update(book));
     }
 
+    @ApiOperation("持久化图书页码到数据库")
+    @GetMapping("persist/{id}")
+    public BaseResponse<Book> persistById(@PathVariable Long id) {
+        log.info("持久化图书页码到数据库");
+        return BaseResponse.success(bookService.persistById(id));
+    }
+
 }

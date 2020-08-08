@@ -17,6 +17,8 @@ public abstract class Constants {
 
     public static final String REDIS_USER_PREFIX = "library:lib_user:";
 
+    public static final String REDIS_BOOK_PREFIX = "library:lib_book:";
+
     public static final String BOOK_FORMAT = "pdf";
 
     private Constants() {

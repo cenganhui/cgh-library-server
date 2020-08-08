@@ -67,6 +67,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public User createUser(User user) {
+        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+            throw new LibraryException(StatusCode.USER_EXIST);
+        }
         user.setPassword(EncryptUtil.encryptPassword(user.getPassword()));
         user.setCreateTime(LocalDateTime.now());
         return userRepository.save(user);
