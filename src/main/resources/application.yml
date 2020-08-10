@@ -17,7 +17,7 @@ spring:
   # 配置 Redis
   redis:
     host: 47.115.148.227
-    password:
+    password: nishi213
     timeout: 5000
     database: 0
   jackson:

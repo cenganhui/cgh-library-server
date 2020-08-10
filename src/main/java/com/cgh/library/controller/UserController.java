@@ -26,7 +26,7 @@ public class UserController {
 
     @ApiOperation("修改用户")
     @PutMapping
-    public BaseResponse<User> update(@Valid @RequestBody User user) {
+    public BaseResponse<User> update(@RequestBody User user) {
         log.info("修改用户");
         return BaseResponse.success(userService.updateUser(user));
     }
