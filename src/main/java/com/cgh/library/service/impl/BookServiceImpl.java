@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String url = Constants.HOST + fileName;
+            String url = Constants.HOST + fileName + ".pdf";
             Book book = new Book();
             book.setName(name);
             book.setUrl(url);
