@@ -67,7 +67,8 @@ public class BookServiceImpl implements BookService {
             throw new LibraryException(StatusCode.REQUEST_PARAM_ILLEGAL);
         }
         if (checkFormat(name)) {
-            String filePath = String.format("%s%s.pdf", Constants.SAVE_FILE_PATH, UUID.randomUUID());
+            String fileName = UUID.randomUUID().toString();
+            String filePath = String.format("%s%s.pdf", Constants.SAVE_FILE_PATH, fileName);
             // 保存文件到磁盘
             File dest = new File(filePath);
             try {
@@ -75,7 +76,7 @@ public class BookServiceImpl implements BookService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String url = Constants.HOST;
+            String url = Constants.HOST + fileName;
             Book book = new Book();
             book.setName(name);
             book.setUrl(url);
