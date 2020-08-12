@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT
     username: root
-    password: 123456
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   servlet:
@@ -16,8 +16,8 @@ spring:
       max-request-size: 30MB
   # 配置 Redis
   redis:
-    host: 47.115.148.227
-    password: nishi213
+    host: 127.0.0.1
+    password:
     timeout: 5000
     database: 0
   jackson:
