@@ -64,7 +64,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book upload(MultipartFile file) {
-        // TODO 待重构
         String name = file.getOriginalFilename();
         if (StringUtil.isNullOrEmpty(name)) {
             throw new LibraryException(StatusCode.REQUEST_PARAM_ILLEGAL);
@@ -97,8 +96,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book update(Book book) {
-        // 将 book 保存至 Redis，过期时间为 2 小时
-        redisTemplate.opsForValue().set(Constants.REDIS_BOOK_PREFIX + book.getId(), JSON.toJSONString(book), 2, TimeUnit.HOURS);
+        // 将 book 保存至 Redis，过期时间为 8 小时
+        redisTemplate.opsForValue().set(Constants.REDIS_BOOK_PREFIX + book.getId(), JSON.toJSONString(book), 8, TimeUnit.HOURS);
         return book;
     }
 
