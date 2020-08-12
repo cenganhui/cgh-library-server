@@ -4,6 +4,8 @@ import com.cgh.library.persistence.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author cenganhui
  */
@@ -57,5 +59,13 @@ public interface BookService {
      * @return 图书
      */
     Book persistById(Long id);
+
+    /**
+     * 根据id下载图书pdf
+     *
+     * @param id       图书id
+     * @param response response
+     */
+    void download(Long id, HttpServletResponse response);
 
 }

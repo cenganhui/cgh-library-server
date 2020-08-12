@@ -16,11 +16,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -115,6 +118,30 @@ public class BookServiceImpl implements BookService {
             return bookRepository.save(dbBook);
         } else {
             throw new LibraryException(StatusCode.NOT_FOUND_BOOK);
+        }
+    }
+
+    @Override
+    public void download(Long id, HttpServletResponse response) {
+        Book book = bookRepository.findBookById(id);
+        // 判断是否用此书或者此书是否属于当前用户
+        if (book == null || !book.getUserId().equals(onlineService.getCurrentUserId())) {
+            throw new LibraryException(StatusCode.NOT_FOUND_BOOK);
+        }
+        try {
+            // 获取文件输入流
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(book.getFilePath()));
+            byte[] data = new byte[inputStream.available()];
+            inputStream.read(data);
+            inputStream.close();
+            // 解决文件名乱码
+            String fileName = URLEncoder.encode(book.getName(), StandardCharsets.UTF_8.toString());
+            String value = String.format("attachment;filename=\"%s\";filename*=utf-8''%s", fileName, fileName);
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, value);
+            response.getOutputStream().write(data);
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            throw new LibraryException(StatusCode.DOWNLOAD_ERROR);
         }
     }
 

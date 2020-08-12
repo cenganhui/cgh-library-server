@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * @author cenganhui
@@ -53,6 +55,14 @@ public class BookController {
     public BaseResponse<Book> upload(@RequestParam("file") MultipartFile file) {
         log.info("上传图书pdf");
         return BaseResponse.success(bookService.upload(file));
+    }
+
+    @ApiOperation("根据图书id下载图书")
+    @GetMapping("download/{id}")
+    public BaseResponse<String> download(@PathVariable Long id, HttpServletResponse response) {
+        log.info("根据图书id下载图书");
+        bookService.download(id, response);
+        return BaseResponse.success("下载成功");
     }
 
     @ApiOperation("更新图书")
