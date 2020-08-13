@@ -1,6 +1,6 @@
 # 我的图书服务端
 
-- [我的图书前](https://github.com/cenganhui/cgh-library-front)
+- [我的图书前端](https://github.com/cenganhui/cgh-library-front)
 
 **参考资料**
 

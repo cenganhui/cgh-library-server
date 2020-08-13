@@ -40,7 +40,7 @@ public class AdminController {
     @PostMapping("users")
     public BaseResponse<User> createUser(@Valid @RequestBody User user) {
         log.info("创建用户");
-//        adminService.checkPermission();
+        adminService.checkPermission();
         return BaseResponse.success(adminService.createUser(user));
     }
 
