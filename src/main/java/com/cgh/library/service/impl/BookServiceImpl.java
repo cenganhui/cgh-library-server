@@ -187,7 +187,7 @@ public class BookServiceImpl implements BookService {
         }
         if (fileHead != null && fileHead.length() > 0) {
             fileHead = fileHead.toUpperCase();
-            if (Constants.PDF.equals(fileHead)) {
+            if (fileHead.startsWith(Constants.PDF)) {
                 return Boolean.TRUE;
             }
         }
