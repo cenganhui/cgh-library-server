@@ -22,6 +22,8 @@ public abstract class Constants {
 
     public static final String BOOK_FORMAT = "pdf";
 
+    public static final String PDF = "255044462D312E";
+
     private Constants() {
     }
 

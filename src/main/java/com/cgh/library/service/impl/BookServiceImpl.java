@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService {
         if (StringUtil.isNullOrEmpty(name)) {
             throw new LibraryException(StatusCode.REQUEST_PARAM_ILLEGAL);
         }
-        if (checkFormat(name)) {
+        if (checkPdf(file)) {
             String fileName = UUID.randomUUID().toString();
             String filePath = String.format("%s%s.pdf", Constants.SAVE_FILE_PATH, fileName);
             // 保存文件到磁盘
@@ -169,6 +169,62 @@ public class BookServiceImpl implements BookService {
         }
         String suffix = str[str.length - 1];
         return Constants.BOOK_FORMAT.equals(suffix);
+    }
+
+    /**
+     * 魔数检验上传的文件是否是 pdf 格式
+     *
+     * @param file 文件
+     * @return 是否合格
+     */
+    private Boolean checkPdf(MultipartFile file) {
+        // 获取文件头
+        String fileHead;
+        try {
+            fileHead = getFileHeader(file);
+        } catch (IOException e) {
+            throw new LibraryException(StatusCode.FILE_CHECK_ERROR);
+        }
+        if (fileHead != null && fileHead.length() > 0) {
+            fileHead = fileHead.toUpperCase();
+            if (Constants.PDF.equals(fileHead)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
+     * 获取文件头
+     *
+     * @param file MultipartFile
+     * @return String
+     * @throws IOException IOException
+     */
+    private String getFileHeader(MultipartFile file) throws IOException {
+        byte[] b = new byte[28];
+        InputStream inputStream = file.getInputStream();
+        inputStream.read(b, 0, 28);
+        return bytesToHex(b);
+    }
+
+    /**
+     * 将字节数组转换成 16 进制字符串
+     */
+    public static String bytesToHex(byte[] src) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < src.length; i++) {
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
     }
 
 }

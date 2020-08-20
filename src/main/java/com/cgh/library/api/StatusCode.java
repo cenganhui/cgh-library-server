@@ -41,6 +41,8 @@ public class StatusCode {
 
     public static final StatusCode DOWNLOAD_ERROR = new StatusCode("0014", "下载出错", Level.WARN);
 
+    public static final StatusCode FILE_CHECK_ERROR = new StatusCode("0015", "文件校验出错", Level.WARN);
+
     private final String code;
     private final String msg;
     private final Level level;
