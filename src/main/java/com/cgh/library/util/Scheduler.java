@@ -5,7 +5,10 @@ import com.cgh.library.Constants;
 import com.cgh.library.api.StatusCode;
 import com.cgh.library.exception.LibraryException;
 import com.cgh.library.persistence.entity.Book;
+import com.cgh.library.persistence.entity.TieBaUser;
 import com.cgh.library.persistence.repository.BookRepository;
+import com.cgh.library.persistence.repository.TieBaUserRepository;
+import com.cgh.library.service.TieBaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -35,12 +38,16 @@ public class Scheduler {
 
     private final StringRedisTemplate redisTemplate;
 
+    private final TieBaUserRepository tieBaUserRepository;
+
+    private final TieBaService tieBaService;
+
     /**
      * 每隔 4h 执行一次
      */
     @Scheduled(fixedRate = 4 * 60 * 60 * 1000)
     public void persistToDatabase() {
-        log.info("定时任务：持久化 Redis 图书数据到数据库，开始时间：{}", DATE_FORMAT.format(new Date()));
+        log.info("定时任务1：持久化 Redis 图书数据到数据库，开始时间：{}", DATE_FORMAT.format(new Date()));
         // 获取所有图书 key 集合
         Set<String> keys = redisTemplate.keys(Constants.REDIS_BOOK_PREFIX + "*");
         // 若集合不为空，则遍历集合
@@ -62,7 +69,20 @@ public class Scheduler {
             }
             bookRepository.saveAll(bookList);
         }
-        log.info("定时任务：持久化 Redis 图书数据到数据库，结束时间：{}", DATE_FORMAT.format(new Date()));
+        log.info("定时任务1：持久化 Redis 图书数据到数据库，结束时间：{}", DATE_FORMAT.format(new Date()));
+    }
+
+    /**
+     * 每天上午 9 点执行全贴吧用户签到
+     */
+    @Scheduled(cron = "0 0 9 * * ?")
+    public void allTieBaUserDoSign() {
+        log.info("定时任务2：全贴吧用户执行签到，开始时间：{}", DATE_FORMAT.format(new Date()));
+        List<TieBaUser> all = tieBaUserRepository.findAll();
+        for (TieBaUser tieBaUser : all) {
+            tieBaService.doSign(tieBaUser);
+        }
+        log.info("定时任务2：全贴吧用户执行签到，开始时间：{}", DATE_FORMAT.format(new Date()));
     }
 
 }

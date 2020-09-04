@@ -43,6 +43,8 @@ public class StatusCode {
 
     public static final StatusCode FILE_CHECK_ERROR = new StatusCode("0015", "文件校验出错", Level.WARN);
 
+    public static final StatusCode TIEBA_NO_LOGIN = new StatusCode("0016", "贴吧未登录", Level.WARN);
+
     private final String code;
     private final String msg;
     private final Level level;

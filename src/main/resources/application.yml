@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/library?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT
     username: root
-    password:
+    password: nishi213
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   servlet:
@@ -62,6 +62,9 @@ fastdep:
         role: jwt
       books:
         path: /books/**
+        role: jwt
+      tieba:
+        path: /tieba/**
         role: jwt
     secret: 6Dx8SIuaHXJYnpsG18SSpjPs50lZcT52
     # token 有效期

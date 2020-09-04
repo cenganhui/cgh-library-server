@@ -27,6 +27,9 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "id，创建不用传id，修改要传", hidden = true)
     private Long id;
 
+    @ApiModelProperty(value = "贴吧id")
+    private Long tiebaId;
+
     @NotBlank
     @Column(unique = true)
     @ApiModelProperty(value = "用户名")
@@ -39,6 +42,9 @@ public class User extends BaseEntity {
     @NotBlank
     @ApiModelProperty(value = "密码")
     private String password;
+
+    @ApiModelProperty(value = "邮箱")
+    private String email;
 
     @ApiModelProperty(value = "管理员权限")
     private Boolean admin = false;
