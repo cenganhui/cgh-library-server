@@ -33,9 +33,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   mail:
     host: smtp.163.com
-    userename: cghAkuma@163.com
+    userename: cghakuma@163.com
     password:
-    properties.mail.smtp.port: 456
+    properties.mail.smtp.port: 465
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
     properties.mail.smtp.ssl.enable: true

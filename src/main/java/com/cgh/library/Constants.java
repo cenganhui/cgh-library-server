@@ -26,7 +26,7 @@ public abstract class Constants {
 
     public static final String SEND_EMAIL_SUBJECT = "贴吧签到结果";
 
-    public static final String EMAIL_FROM = "cghAkuma@163.com";
+    public static final String EMAIL_FROM = "cghakuma@163.com";
 
     private Constants() {
     }
