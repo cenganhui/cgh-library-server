@@ -1,9 +1,9 @@
 package com.cgh.library.service.impl;
 
+import com.cgh.library.Constants;
 import com.cgh.library.service.MyMailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,6 @@ public class MyMailServiceImpl implements MyMailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.from}")
-    private final String from;
-
     @Override
     public void sendHtmlMail(String to, String subject, String content) {
         // 获取 MimeMessage 对象
@@ -33,7 +30,7 @@ public class MyMailServiceImpl implements MyMailService {
         try {
             messageHelper = new MimeMessageHelper(message, true);
             // 设置发送人
-            messageHelper.setFrom(from);
+            messageHelper.setFrom(Constants.EMAIL_FROM);
             // 设置收件人
             messageHelper.setTo(to);
             // 设置邮件主题
