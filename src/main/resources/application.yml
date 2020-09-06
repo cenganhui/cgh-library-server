@@ -36,7 +36,6 @@ spring:
     userename: cghAkuma@163.com
     password:
     properties.mail.smtp.port: 456
-    from: cghAkuma@163.com
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
     properties.mail.smtp.ssl.enable: true

@@ -1,7 +1,5 @@
 package com.cgh.library;
 
-import org.springframework.beans.factory.annotation.Value;
-
 /**
  * 常量类
  *
@@ -28,8 +26,7 @@ public abstract class Constants {
 
     public static final String SEND_EMAIL_SUBJECT = "贴吧签到结果";
 
-    @Value("${spring.mail.from}")
-    public static String EMAIL_FROM;
+    public static final String EMAIL_FROM = "cghAkuma@163.com";
 
     private Constants() {
     }
