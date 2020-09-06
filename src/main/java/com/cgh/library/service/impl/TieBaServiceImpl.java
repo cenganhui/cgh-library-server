@@ -1,6 +1,7 @@
 package com.cgh.library.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cgh.library.Constants;
 import com.cgh.library.api.StatusCode;
 import com.cgh.library.dto.PageTieBaDTO;
 import com.cgh.library.dto.QRCodeDTO;
@@ -10,6 +11,7 @@ import com.cgh.library.persistence.entity.TieBaUser;
 import com.cgh.library.persistence.entity.User;
 import com.cgh.library.persistence.repository.TieBaUserRepository;
 import com.cgh.library.persistence.repository.UserRepository;
+import com.cgh.library.service.MyMailService;
 import com.cgh.library.service.OnlineService;
 import com.cgh.library.service.TieBaService;
 import com.github.libsgh.tieba.api.TieBaApi;
@@ -41,6 +43,8 @@ public class TieBaServiceImpl implements TieBaService {
     private final UserRepository userRepository;
 
     private final OnlineService onlineService;
+
+    private final MyMailService myMailService;
 
     private final TieBaApi api = TieBaApi.getInstance();
 
@@ -200,7 +204,36 @@ public class TieBaServiceImpl implements TieBaService {
         tieBaUser.setSignedTb(tieBaUser.getTotalTb() - tieBaUser.getErrorTb());
         tieBaUser.setSignTime(LocalDateTime.now());
         tieBaUser.setSignStatus(true);
+        if (!StringUtil.isNullOrEmpty(tieBaUser.getEmail())) {
+            // 发送邮件
+            myMailService.sendHtmlMail(tieBaUser.getEmail(), Constants.SEND_EMAIL_SUBJECT, concatContent(tieBaUser));
+        }
         return tieBaUser;
+    }
+
+    private String concatContent(TieBaUser tieBaUser) {
+        String startH3 = "<h3>";
+        String endH3 = "</h3>";
+        return startH3 +
+                "贴吧总数：" +
+                tieBaUser.getTotalTb() +
+                endH3 +
+                startH3 +
+                "已签到数：" +
+                tieBaUser.getSignedTb() +
+                endH3 +
+                startH3 +
+                "签到失败：" +
+                tieBaUser.getErrorTb() +
+                endH3 +
+                startH3 +
+                "签到时间：" +
+                tieBaUser.getSignTime() +
+                endH3 +
+                startH3 +
+                "耗时：" +
+                tieBaUser.getCost() +
+                endH3;
     }
 
 }

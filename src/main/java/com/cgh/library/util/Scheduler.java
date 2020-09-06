@@ -82,7 +82,7 @@ public class Scheduler {
         for (TieBaUser tieBaUser : all) {
             tieBaService.doSign(tieBaUser);
         }
-        log.info("定时任务2：全贴吧用户执行签到，开始时间：{}", DATE_FORMAT.format(new Date()));
+        log.info("定时任务2：全贴吧用户执行签到，结束时间：{}", DATE_FORMAT.format(new Date()));
     }
 
 }
