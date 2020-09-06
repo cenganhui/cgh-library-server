@@ -35,12 +35,17 @@ spring:
     host: smtp.163.com
     userename: cghakuma@163.com
     password:
-    properties.mail.smtp.port: 465
-    properties.mail.smtp.starttls.enable: true
-    properties.mail.smtp.starttls.required: true
-    properties.mail.smtp.ssl.enable: true
+    protocol: smtp
     default-encoding: utf-8
-
+    properties:
+      mail:
+        smtp:
+          port: 465
+          strattls:
+            enable: true
+            required: true
+        ssl:
+          enable: true
 
 #  spring.jackson.default-property-inclusion=non_null
 #  spring.jackson.time-zone=GMT+8
