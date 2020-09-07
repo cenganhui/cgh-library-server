@@ -208,6 +208,9 @@ public class TieBaServiceImpl implements TieBaService {
             // 发送邮件
             myMailService.sendHtmlMail(tieBaUser.getEmail(), Constants.SEND_EMAIL_SUBJECT, concatContent(tieBaUser));
         }
+        if (tieBaUser.getId() != null) {
+            tieBaUser = tieBaUserRepository.save(tieBaUser);
+        }
         return tieBaUser;
     }
 
